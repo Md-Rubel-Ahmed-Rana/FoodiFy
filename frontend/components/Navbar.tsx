@@ -1,9 +1,27 @@
+import Link from "next/link";
 import { ThemeToggle } from "./theme-switcher";
 
 const Navbar = () => {
   return (
-    <div className="px-4 py-2  flex justify-between items-center">
-      <h1 className="text-2xl font-semibold">FoodiFy</h1>
+    <div className="px-4 py-3 dark:bg-transparent shadow bg-green-500  flex justify-between items-center">
+      <h1 className="text-2xl text-white font-semibold">Foodify</h1>
+      <ul className="flex items-center gap-3 text-lg font-semibold text-white">
+        <li>
+          <Link href={"/"}>Home</Link>
+        </li>
+        <li>
+          <Link href={"/"}>Recipes</Link>
+        </li>
+        <li>
+          <Link href={"/"}>Restaurants</Link>
+        </li>
+        <li>
+          <Link href={"/account/login"}>Sign</Link>
+        </li>
+        <li>
+          <Link href={"/account/register"}>Signup</Link>
+        </li>
+      </ul>
       <ThemeToggle />
     </div>
   );
