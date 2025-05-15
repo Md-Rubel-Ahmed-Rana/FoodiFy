@@ -1,0 +1,15 @@
+version: '3'
+services:
+  foodify-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: foodify-server
+    ports:
+      - '6060:6060'
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
