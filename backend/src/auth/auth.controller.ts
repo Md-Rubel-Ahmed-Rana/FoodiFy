@@ -20,6 +20,7 @@ import { ConfigService } from '@nestjs/config';
 export class AuthController {
   private readonly accessTokenName: 'foodify_access_token';
   private readonly cookieOptions = {
+    domain: 'https://foodify-silk.vercel.app',
     httpOnly: true,
     sameSite: 'none' as const,
     secure: true,
