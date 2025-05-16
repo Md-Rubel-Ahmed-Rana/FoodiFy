@@ -11,7 +11,7 @@ import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly accessTokenName: 'foodify_access_token';
+  private readonly accessTokenName: string = 'foodify_access_token';
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,

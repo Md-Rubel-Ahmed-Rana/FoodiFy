@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  private readonly accessTokenName: 'foodify_access_token';
+  private readonly accessTokenName: string = 'foodify_access_token';
   private readonly cookieOptions = {
     httpOnly: true,
     sameSite: 'none' as const,
@@ -51,8 +51,14 @@ export class AuthController {
       user.email,
     );
 
+    console.log({
+      from: 'Auth controller',
+      accessToken,
+      user,
+    });
+
     // set tokens on cookie
-    await this.setCookies(res, accessToken);
+    this.setCookies(res, accessToken);
     return res.redirect(
       this.configService.get<string>('POST_LOGIN_REDIRECT_URL'),
     );
@@ -78,7 +84,11 @@ export class AuthController {
     });
   }
 
-  private async setCookies(res: Response, accessToken: string) {
-    res.cookie(this.accessTokenName, accessToken, this.cookieOptions);
+  private setCookies(res: Response, accessToken: string) {
+    console.log({
+      from: 'Auth controller setCookies',
+      accessToken,
+    });
+    return res.cookie(this.accessTokenName, accessToken, this.cookieOptions);
   }
 }
