@@ -8,7 +8,7 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-  private readonly accessTokenExpire: '7d';
+  private readonly accessTokenExpire: number = 60 * 60 * 24 * 30;
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
