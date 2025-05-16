@@ -14,6 +14,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { AuthGuard } from './auth.guard';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +26,10 @@ export class AuthController {
     maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
   };
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get()
   @UseGuards(AuthGuard)
@@ -49,11 +53,9 @@ export class AuthController {
 
     // set tokens on cookie
     await this.setCookies(res, accessToken);
-    return res.status(HttpStatus.OK).json({
-      statusCode: HttpStatus.OK,
-      message: 'User logged in successfully',
-      success: true,
-    });
+    return res.redirect(
+      this.configService.get<string>('POST_LOGIN_REDIRECT_URL'),
+    );
   }
 
   @Post('login')
