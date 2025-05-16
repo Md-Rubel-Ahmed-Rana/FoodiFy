@@ -88,6 +88,8 @@ export class AuthController {
     console.log({
       from: 'Auth controller setCookies',
       accessToken,
+      accessTokenName: this.accessTokenName,
+      cookieOptions: this.cookieOptions,
     });
     return res.cookie(this.accessTokenName, accessToken, this.cookieOptions);
   }
