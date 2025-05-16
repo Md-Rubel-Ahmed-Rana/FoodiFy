@@ -1,4 +1,5 @@
 "use client";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -36,11 +37,11 @@ const RegisterForm = () => {
   const { isSubmitting, isValid } = form.formState;
 
   return (
-    <div className="max-w-lg mx-auto mt-6">
+    <div className="max-w-lg mx-auto mt-6 space-y-8 border p-5 rounded-md">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleRegister)}
-          className="space-y-8 border p-5 rounded-md"
+          className="space-y-8"
         >
           <FormField
             control={form.control}
@@ -51,7 +52,7 @@ const RegisterForm = () => {
                 <FormControl>
                   <Input
                     disabled={isSubmitting}
-                    placeholder="Enter your full name"
+                    placeholder="Enter your name"
                     {...field}
                   />
                 </FormControl>
@@ -80,13 +81,14 @@ const RegisterForm = () => {
             <Button
               disabled={!isValid || isSubmitting}
               type="submit"
-              className="w-full"
+              className="w-full text-white"
             >
               Register
             </Button>
           </div>
         </form>
       </Form>
+      <GoogleLoginButton />
     </div>
   );
 };

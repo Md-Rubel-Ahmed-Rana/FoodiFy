@@ -1,4 +1,5 @@
 "use client";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,8 +15,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  password: z.string(),
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 const LoginForm = () => {
@@ -34,11 +38,11 @@ const LoginForm = () => {
   const { isSubmitting, isValid } = form.formState;
 
   return (
-    <div className="max-w-lg mx-auto mt-6">
+    <div className="max-w-lg mx-auto mt-6 space-y-8 border p-5 rounded-md">
       <Form {...form}>
         <form
+          className="space-y-8"
           onSubmit={form.handleSubmit(handleRegister)}
-          className="space-y-8 border p-5 rounded-md"
         >
           <FormField
             control={form.control}
@@ -48,6 +52,7 @@ const LoginForm = () => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
+                    type="email"
                     disabled={isSubmitting}
                     placeholder="Enter your email"
                     {...field}
@@ -80,13 +85,14 @@ const LoginForm = () => {
             <Button
               disabled={!isValid || isSubmitting}
               type="submit"
-              className="w-full"
+              className="w-full text-white"
             >
               Login
             </Button>
           </div>
         </form>
       </Form>
+      <GoogleLoginButton />
     </div>
   );
 };
