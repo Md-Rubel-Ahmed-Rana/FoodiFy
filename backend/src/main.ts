@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(morgan('dev'));
   app.enableCors({
-    origin: ['https://foodify-silk.vercel.app'],
+    origin: ['https://foodify-silk.vercel.app', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
