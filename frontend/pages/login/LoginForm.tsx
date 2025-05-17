@@ -12,7 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
+import axios from "axios";
+import { apiUri } from "@/apollo-client/client";
 
 const formSchema = z.object({
   email: z
@@ -29,10 +32,20 @@ const LoginForm = () => {
       email: "",
       password: "",
     },
+    mode: "onChange",
   });
 
-  const handleRegister = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const handleLogin = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const result = await axios.post(`${apiUri}/auth/login`, values, {
+        withCredentials: true,
+      });
+      console.log(result);
+      toast.success("Login successful", { position: "top-right" });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to login", { position: "top-right" });
+    }
   };
 
   const { isSubmitting, isValid } = form.formState;
@@ -40,10 +53,7 @@ const LoginForm = () => {
   return (
     <div className="max-w-lg mx-auto mt-6 space-y-8 border p-5 rounded-md">
       <Form {...form}>
-        <form
-          className="space-y-8"
-          onSubmit={form.handleSubmit(handleRegister)}
-        >
+        <form className="space-y-8" onSubmit={form.handleSubmit(handleLogin)}>
           <FormField
             control={form.control}
             name="email"
