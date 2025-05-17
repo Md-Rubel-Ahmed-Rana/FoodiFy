@@ -4,8 +4,10 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -57,11 +59,30 @@ export class AuthController {
       user,
     });
 
-    // set tokens on cookie
-    this.setCookies(res, accessToken);
     return res.redirect(
-      this.configService.get<string>('POST_LOGIN_REDIRECT_URL'),
+      `${this.configService.get<string>('POST_LOGIN_REDIRECT_URL')}?name=${user.name}&email=${user.email}&token=${accessToken}`,
     );
+  }
+
+  @Get('google/login')
+  async googleLogin(@Query('token') token: string, @Res() res: Response) {
+    console.log({
+      from: 'Auth controller - google/login',
+      accessToken: token,
+    });
+
+    if (!token) {
+      throw new HttpException('Token was not found', HttpStatus.BAD_REQUEST);
+    }
+
+    // set tokens on cookie
+    this.setCookies(res, token);
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Logged in successfully',
+      data: null,
+    });
   }
 
   @Post('login')
