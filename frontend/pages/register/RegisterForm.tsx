@@ -1,4 +1,5 @@
 "use client";
+import { CreateUser } from "@/apollo-client/user";
 import GoogleLoginButton from "@/components/GoogleLoginButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,28 +11,48 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Name must be at least 2 characters.",
   }),
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" }),
+  password: z.string().min(1, { message: "Password is required" }),
 });
 
 const RegisterForm = () => {
+  const [createUser, { data, loading, error }] = useMutation(CreateUser);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
     },
+    mode: "onChange",
   });
 
-  const handleRegister = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const handleRegister = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const result = await createUser({
+        variables: {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        },
+      });
+      console.log({ result, data, loading, error });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to register");
+    }
   };
 
   const { isSubmitting, isValid } = form.formState;
@@ -70,6 +91,24 @@ const RegisterForm = () => {
                   <Input
                     disabled={isSubmitting}
                     placeholder="Enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    disabled={isSubmitting}
+                    placeholder="Enter password"
                     {...field}
                   />
                 </FormControl>

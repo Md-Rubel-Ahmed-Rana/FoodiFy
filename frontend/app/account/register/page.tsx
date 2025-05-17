@@ -1,3 +1,4 @@
+import ApolloWrapper from "@/apollo-client/ApolloWrapper";
 import Register from "@/pages/register";
 import { Metadata } from "next";
 
@@ -8,9 +9,9 @@ export const metadata: Metadata = {
 
 const RegisterPage = () => {
   return (
-    <div>
+    <ApolloWrapper>
       <Register />
-    </div>
+    </ApolloWrapper>
   );
 };
 
