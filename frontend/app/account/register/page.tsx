@@ -1,5 +1,5 @@
 import ApolloWrapper from "@/apollo-client/ApolloWrapper";
-import Register from "@/pages/register";
+import Register from "@/content-pages/register";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

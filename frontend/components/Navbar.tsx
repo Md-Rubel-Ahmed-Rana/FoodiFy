@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-switcher";
+import { FaCartShopping } from "react-icons/fa6";
 
 const Navbar = () => {
   return (
@@ -22,7 +23,12 @@ const Navbar = () => {
           <Link href={"/account/register"}>Signup</Link>
         </li>
       </ul>
-      <ThemeToggle />
+      <div className="flex items-center gap-4">
+        <Link className="border p-1 rounded-md" href={"/cart"}>
+          <FaCartShopping size={20} color="white" />
+        </Link>
+        <ThemeToggle />
+      </div>
     </div>
   );
 };
