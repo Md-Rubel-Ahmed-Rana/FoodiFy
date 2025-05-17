@@ -70,7 +70,13 @@ export class AuthController {
       body.email,
       body.password,
     );
-    await this.setCookies(res, accessToken);
+    this.setCookies(res, accessToken);
+    return res.status(HttpStatus.OK).json({
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Logged in successfully',
+      data: null,
+    });
   }
 
   @Delete('logout')
